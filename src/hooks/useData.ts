@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { olympicsData } from '../data/olympicsData.ts'
+import { olympicService } from '../services/olympicService.ts'
 import type { Olympic } from '../models/olympic.ts'
 
 interface UseDataResult {
@@ -14,22 +14,21 @@ export const useData = (): UseDataResult => {
   const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      try {
-        setData(olympicsData)
-        setIsLoading(false)
-      } catch (caughtError) {
-        setError(
-          caughtError instanceof Error
-            ? caughtError
-            : new Error('Impossible de charger les données'),
-        )
-        setIsLoading(false)
-      }
-    }, 500)
-
-    return () => window.clearTimeout(timeoutId)
-  }, [])
+    olympicService
+      .getAll()
+      .then((countries) => {
+          setData(countries)
+          setIsLoading(false)
+      })
+      .catch((caughtError: unknown) => {
+          setError(
+            caughtError instanceof Error
+              ? caughtError
+              : new Error('Impossible de charger les données'),
+          )
+          setIsLoading(false)
+      })
+    }, [])
 
   return { data, isLoading, error }
 }
