@@ -12,6 +12,7 @@ import {
   PointElement,
 } from 'chart.js'
 import { Pie, Line } from 'react-chartjs-2'
+import { LoadingState } from './components/LoadingState.tsx'
 import { HeaderComponent } from './components/HeaderComponent.tsx'
 import { IndicatorCard } from './components/IndicatorCard.tsx'
 
@@ -176,7 +177,7 @@ const Home: FC = () => {
 
   // Anti-pattern 7 — État de chargement dérivé des données au lieu d'un état dédié (loading/error).
   if (!data) {
-    return <div>Chargement...</div>
+    return <LoadingState message="Chargement..." />
   }
 
   const chartData = {
