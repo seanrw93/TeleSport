@@ -12,6 +12,8 @@ import {
   PointElement,
 } from 'chart.js'
 import { Pie, Line } from 'react-chartjs-2'
+import { HeaderComponent } from './components/HeaderComponent.tsx'
+import { IndicatorCard } from './components/IndicatorCard.tsx'
 
 ChartJS.register(
   ArcElement,
@@ -218,31 +220,25 @@ const Home: FC = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">
-          Historique des Jeux Olympiques - TéléSport
-        </h1>
-
-        <div className="mb-8">
-          <p className="text-lg">
-            Bienvenue sur la page dédiée à l'historique des Jeux Olympiques.
-            Explorez les performances des pays au fil des années.
-          </p>
-        </div>
+        <HeaderComponent
+          title="Historique des Jeux Olympiques - TéléSport"
+          description="Bienvenue sur la page dédiée à l'historique des Jeux Olympiques. Explorez les performances des pays au fil des années."
+        />
 
         {/* Anti-pattern 8 — Cartes dupliquées — extraire en composant réutilisable (Indicator.tsx). */}
         <div className="mb-2">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center mb-2">
-            <h3 className="text-xl font-semibold mb-2">Pays participants</h3>
-            <p className="text-4xl font-bold text-blue-400">
-              {totalParticipatingCountries}
-            </p>
+          <div className="mb-2">
+            <IndicatorCard
+              label="Pays participants"
+              value={totalParticipatingCountries}
+              valueClassName="text-blue-400"
+            />
           </div>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center">
-            <h3 className="text-xl font-semibold mb-2">Éditions des JO</h3>
-            <p className="text-4xl font-bold text-green-400">
-              {totalGamesEditions}
-            </p>
-          </div>
+          <IndicatorCard
+            label="Éditions des JO"
+            value={totalGamesEditions}
+            valueClassName="text-green-400"
+          />
         </div>
 
         <div className="bg-gray-800 p-8 rounded-lg shadow-xl">
