@@ -8,6 +8,7 @@ import {
 import type { ChartData, ChartOptions } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import type { Olympic } from '../models/olympic.ts'
+import { calculateTotalMedals } from '../utils/olympicCalculations.ts'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -50,12 +51,7 @@ export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
     datasets: [
       {
         label: 'Total des médailles',
-        data: countries.map((country) =>
-          country.participations.reduce(
-            (total, participation) => total + participation.medalsCount,
-            0,
-          ),
-        ),
+        data: countries.map(calculateTotalMedals),
         backgroundColor: backgroundColors,
         borderColor: borderColors,
         borderWidth: 1,
