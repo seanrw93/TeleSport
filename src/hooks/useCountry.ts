@@ -11,25 +11,31 @@ export const useCountry = (id: number): AsyncData<Olympic | undefined> => {
     error: null,
   })
 
-  useEffect(() => {
-    setState({ data: null, isLoading: true, error: null })
+    let active = true
 
     olympicService
       .getById(id)
       .then((data) => {
-        setState({ data, isLoading: false, error: null })
+        if (active) {
+          setState({ data, isLoading: false, error: null })
+        }
       })
       .catch((caughtError: unknown) => {
-        setState({
-          data: null,
-          isLoading: false,
-          error:
-            caughtError instanceof Error
-              ? caughtError
-              : new Error('Impossible de charger le pays'),
-        })
+        if (active) {
+          setState({
+            data: null,
+            isLoading: false,
+            error:
+              caughtError instanceof Error
+                ? caughtError
+                : new Error('Impossible de charger le pays'),
+          })
+        }
       })
-  }, [id])
+
+    return () => {
+      active = false
+    }
 
   return state
 }
