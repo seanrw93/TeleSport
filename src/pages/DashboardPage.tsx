@@ -4,10 +4,10 @@ import { HeaderComponent } from '../components/HeaderComponent.tsx'
 import { IndicatorCard } from '../components/IndicatorCard.tsx'
 import { LoadingState } from '../components/LoadingState.tsx'
 import { MedalTotalsChart } from '../components/MedalTotalsChart.tsx'
-import { useData } from '../hooks/useData.ts'
+import { useOlympics } from '../hooks/useData.ts'
 
 export const DashboardPage: FC = () => {
-  const { data, isLoading, error } = useData()
+  const { data, isLoading, error } = useOlympics()
 
   const totalParticipatingCountries = data?.length ?? 0
   const totalGamesEditions = 5

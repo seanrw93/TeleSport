@@ -1,18 +1,21 @@
+// src/hooks/useCountry.ts
 import { useEffect, useState } from 'react'
-import { olympicService } from '../services/olympicService.ts'
-import type { Olympic } from '../models/olympic.ts'
+import { olympicService } from '../services/olympicService'
+import type { Olympic } from '../models/olympic'
 import type { AsyncData } from '../models/asyncData'
 
-export const useOlympics = (): AsyncData<Olympic[]> => {
-  const [state, setState] = useState<AsyncData<Olympic[]>>({
+export const useCountry = (id: number): AsyncData<Olympic | undefined> => {
+  const [state, setState] = useState<AsyncData<Olympic | undefined>>({
     data: null,
     isLoading: true,
     error: null,
   })
 
   useEffect(() => {
+    setState({ data: null, isLoading: true, error: null })
+
     olympicService
-      .getAll()
+      .getById(id)
       .then((data) => {
         setState({ data, isLoading: false, error: null })
       })
@@ -23,10 +26,10 @@ export const useOlympics = (): AsyncData<Olympic[]> => {
           error:
             caughtError instanceof Error
               ? caughtError
-              : new Error('Impossible de charger les données'),
+              : new Error('Impossible de charger le pays'),
         })
       })
-  }, [])
+  }, [id])
 
   return state
 }
