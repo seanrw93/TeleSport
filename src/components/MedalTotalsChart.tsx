@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   ArcElement,
   Chart as ChartJS,
@@ -49,6 +50,7 @@ const chartOptions: ChartOptions<'pie'> = {
 }
 
 export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
+  const navigate = useNavigate()
   const chartData: ChartData<'pie', number[], string> = {
     labels: countries.map((country) => country.country),
     datasets: [
@@ -62,10 +64,23 @@ export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
     ],
   }
 
+  const chartOptionsWithNavigation: ChartOptions<'pie'> = {
+    ...chartOptions,
+    onClick: (_event, elements) => {
+      const element = elements[0]
+      if (element) {
+        const country = countries[element.index]
+        if (country) {
+          navigate(`/country/${country.id}`)
+        }
+      }
+    },
+  }
+
   return (
     <div className="p-4 sm:p-8">
       <div className="h-88 sm:h-104" role="img" aria-label="Graphique circulaire présentant le total des médailles par pays">
-        <Pie data={chartData} options={chartOptions} />
+        <Pie data={chartData} options={chartOptionsWithNavigation} />
       </div>
     </div>
   )

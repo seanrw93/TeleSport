@@ -36,7 +36,7 @@ export const DashboardPage: FC = () => {
         <section aria-labelledby="overview-title" className="mb-8">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 id="overview-title" className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-400">
-              Vue d&apos;ensemble
+              Vue d'ensemble
             </h2>
             <span className="rounded-full border border-slate-800 bg-slate-900 px-3 py-1 text-xs font-medium text-slate-400">
               Données historiques
