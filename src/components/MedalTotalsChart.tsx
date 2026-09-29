@@ -17,19 +17,19 @@ interface MedalTotalsChartProps {
 }
 
 const backgroundColors = [
-  'rgba(255, 99, 132, 0.6)',
-  'rgba(54, 162, 235, 0.6)',
-  'rgba(255, 206, 86, 0.6)',
-  'rgba(75, 192, 192, 0.6)',
-  'rgba(153, 102, 255, 0.6)',
+  'rgba(56, 189, 248, 0.78)',
+  'rgba(52, 211, 153, 0.78)',
+  'rgba(251, 191, 36, 0.78)',
+  'rgba(129, 140, 248, 0.78)',
+  'rgba(244, 114, 182, 0.78)',
 ]
 
 const borderColors = [
-  'rgba(255, 99, 132, 1)',
-  'rgba(54, 162, 235, 1)',
-  'rgba(255, 206, 86, 1)',
-  'rgba(75, 192, 192, 1)',
-  'rgba(153, 102, 255, 1)',
+  'rgb(56, 189, 248)',
+  'rgb(52, 211, 153)',
+  'rgb(251, 191, 36)',
+  'rgb(129, 140, 248)',
+  'rgb(244, 114, 182)',
 ]
 
 const chartOptions: ChartOptions<'pie'> = {
@@ -39,7 +39,10 @@ const chartOptions: ChartOptions<'pie'> = {
     legend: {
       position: 'bottom',
       labels: {
-        color: 'white',
+        color: '#cbd5e1',
+        padding: 20,
+        usePointStyle: true,
+        pointStyle: 'circle',
       },
     },
   },
@@ -60,8 +63,8 @@ export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
   }
 
   return (
-    <div className="bg-gray-800 p-8 rounded-lg shadow-xl">
-      <div style={{ height: '400px' }}>
+    <div className="p-4 sm:p-8">
+      <div className="h-88 sm:h-104" role="img" aria-label="Graphique circulaire présentant le total des médailles par pays">
         <Pie data={chartData} options={chartOptions} />
       </div>
     </div>
