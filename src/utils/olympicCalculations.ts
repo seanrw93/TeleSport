@@ -1,7 +1,13 @@
 import type { Olympic } from '../models/olympic.ts'
 
-export const calculateTotalMedals = (olympic: Olympic): number =>
-  olympic.participations.reduce(
+export const calculateTotalMedals = (data: Olympic): number =>
+  data?.participations.reduce(
     (total, participation) => total + participation.medalsCount,
+    0,
+  )
+
+export const calculateTotalAthletes = (data: Olympic): number =>
+  data?.participations.reduce(
+    (total, participation) => total + participation.athleteCount,
     0,
   )

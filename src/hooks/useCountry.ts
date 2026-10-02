@@ -11,6 +11,7 @@ export const useCountry = (id: number): AsyncData<Olympic | undefined> => {
     error: null,
   })
 
+  useEffect(() => {
     let active = true
 
     olympicService
@@ -36,6 +37,7 @@ export const useCountry = (id: number): AsyncData<Olympic | undefined> => {
     return () => {
       active = false
     }
+  }, [id])
 
   return state
 }
