@@ -1,38 +1,33 @@
-# TéléSport - Olympic Games History Dashboard
+# TéléSport
 
-Interactive web application to visualize historical performance data of countries in the Olympic Games.
+TéléSport is a React dashboard for exploring historical Olympic performance by country. The interface is in French and currently uses a local data set covering five Olympic editions.
 
-## 🚀 Features
+The dashboard shows medal totals for each country. Selecting a country opens a detail page with its participation history, medal total, athlete total, and medal evolution.
 
-- **Interactive Dashboard**: View medal counts by country with interactive charts
-- **Country Details**: Explore detailed statistics for each participating country
-- **Data Visualization**: Interactive charts powered by Chart.js
-- **Responsive Design**: Optimized for desktop and mobile devices
-- **Modern Stack**: Built with React 19, TypeScript, and Tailwind CSS
+## Features
 
-## 📋 Prerequisites
+- Dashboard with country totals and summary indicators
+- Interactive medal chart with links to country detail pages
+- Country detail route at `/country/:id`
+- Medal and athlete evolution chart for each country
+- Loading, empty, error, and not-found states
+- Responsive layout for desktop and mobile screens
+- TypeScript models and pure calculation helpers
 
-- **Node.js** 22 LTS or higher
-- **npm** (included with Node.js)
+## Requirements
 
-## 🛠️ Installation
+- Node.js 22 LTS or later
+- npm
 
-Clone the repository:
+## Getting started
 
-```bash
-git clone https://github.com/openclassrooms/p2-dfsjs.git
-cd p2-dfsjs
-```
-
-Install dependencies:
+Clone the repository and install its dependencies:
 
 ```bash
+git clone https://github.com/seanrw93/TeleSport.git
+cd TeleSport
 npm install
 ```
-
-## 🎯 Usage
-
-### Development Server
 
 Start the development server:
 
@@ -40,83 +35,98 @@ Start the development server:
 npm run dev
 ```
 
-The application will be available at [http://localhost:5173](http://localhost:5173)
+Vite prints the local URL in the terminal. The default address is [http://localhost:5173](http://localhost:5173).
 
-### Production Build
+## Available commands
 
-Build the application for production:
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Type-check and build the application |
+| `npm run lint` | Run ESLint with zero warnings allowed |
+| `npm run preview` | Serve the production build locally |
 
-```bash
-npm run build
+## Project structure
+
+```text
+src/
+├── App.tsx                         # Application shell and route definitions
+├── main.tsx                        # React entry point
+├── index.css                       # Global styles and Tailwind imports
+├── components/                     # Reusable presentation components
+│   ├── EmptyState.tsx
+│   ├── ErrorState.tsx
+│   ├── HeaderComponent.tsx
+│   ├── IndicatorCard.tsx
+│   ├── LoadingState.tsx
+│   ├── MedalEvolutionChart.tsx
+│   └── MedalTotalsChart.tsx
+├── data/
+│   └── olympicsData.ts             # Local development data
+├── hooks/
+│   ├── useCountry.ts               # Load one country by route id
+│   └── useData.ts                  # Load the Olympic data set
+├── models/
+│   ├── asyncData.ts                # Shared asynchronous state shape
+│   └── olympic.ts                  # Olympic domain types
+├── pages/
+│   ├── CountryDetailPage.tsx
+│   ├── DashboardPage.tsx
+│   └── NotFoundPage.tsx
+├── services/
+│   └── olympicService.ts           # Data access boundary
+└── utils/
+    └── olympicCalculations.ts      # Pure domain calculations
 ```
 
-### Linting
+The main routes are:
 
-Run the linter to check code quality:
+| Route | Page |
+| --- | --- |
+| `/` | Dashboard |
+| `/country/:id` | Country detail |
+| Any other route | Not found page |
 
-```bash
-npm run lint
+## Data flow
+
+Pages use hooks to request data. The hooks call the Olympic service, which currently reads the local data module and simulates asynchronous loading. Pages handle route parameters and UI states, then pass typed data to reusable components.
+
+```text
+Local data
+    |
+    v
+olympicService
+    |
+    v
+useData or useCountry
+    |
+    v
+DashboardPage or CountryDetailPage
+    |
+    v
+Reusable components and charts
 ```
 
-## 📁 Project Structure
+The service boundary is intentional. A future REST API can replace the local data source without requiring changes to the charts or page layout.
 
-```
-p2-dfsjs/
-├── public/              # Static public assets
-├── src/
-│   ├── App.tsx         # Main application component
-│   ├── main.tsx        # React entry point
-│   └── index.css       # Global styles
-├── index.html          # Main HTML page
-├── package.json        # Project dependencies
-├── tsconfig.json       # TypeScript configuration
-├── vite.config.ts      # Vite configuration
-├── tailwind.config.js  # Tailwind CSS configuration
-└── .eslintrc.cjs       # ESLint configuration
-```
+## Technology
 
-## 🔧 Tech Stack
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Chart.js with `react-chartjs-2`
+- Tailwind CSS
+- ESLint
 
-- **React 19** - UI library with latest features
-- **TypeScript** - Static type checking
-- **Vite 5** - Fast build tool and dev server
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **React Router 6** - Client-side routing
-- **Chart.js** - Interactive data visualization
-- **ESLint** - Code quality and consistency
+## Architecture
 
-## 📊 Data
+The design decisions, responsibilities, data flow, accessibility considerations, and future API direction are described in [architecture.md](architecture.md).
 
-The application currently uses mock data to simulate Olympic Games statistics. This architecture is designed to facilitate future integration with a REST API backend.
+## Current data source
 
-## 🎨 Design
+The application uses mock Olympic data from `src/data/olympicsData.ts`. The shared `Olympic` and `Participation` interfaces in `src/models/olympic.ts` define the shape used by the service, hooks, pages, and charts.
 
-The application features:
+## License
 
-- Clean, modern interface optimized for data visualization
-- Responsive layout adapting to all screen sizes
-- Interactive charts with hover effects
-- Smooth navigation between pages
-
-## 📚 Documentation
-
-For more information on the technologies used:
-
-- [React Documentation](https://react.dev)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Vite Guide](https://vitejs.dev)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [React Router Documentation](https://reactrouter.com)
-- [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is available for educational and personal use.
-
----
-
-**Built with React 19 + TypeScript + Vite + Tailwind CSS**
+This project is intended for educational and personal use.
