@@ -42,6 +42,27 @@ const chartOptions: ChartOptions<'line'> = {
       },
     },
   },
+  onHover: (event, activeElements, chart) => {
+    if (activeElements.length > 0) {
+      const firstPoint = activeElements[0];
+      const datasetIndex = firstPoint.datasetIndex;
+      const index = firstPoint.index;
+      
+      const label = chart.data.labels?.[index];
+      const value = chart.data.datasets[datasetIndex].data?.[index];
+      const datasetLabel = chart.data.datasets[datasetIndex].label;
+
+      console.log(`Hovered: ${datasetLabel} in ${label} = ${value}`);
+      
+      if (event.native && event.native.target) {
+        (event.native.target as HTMLElement).style.cursor = 'pointer';
+      }
+    } else {
+      if (event.native && event.native.target) {
+        (event.native.target as HTMLElement).style.cursor = 'default';
+      }
+    }
+  },
   scales: {
     y: {
       ticks: {

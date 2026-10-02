@@ -15,8 +15,7 @@ export const DashboardPage: FC = () => {
   const totalMedals = data?.reduce(
     (total, country) => total + calculateTotalMedals(country),
     0,
-  ) ?? 0
-
+  )
   if (isLoading || !data) {
     return <LoadingState message="Chargement..." />
   }

@@ -6,7 +6,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
-import type { ChartData, ChartOptions } from 'chart.js'
+import type { ActiveElement, ChartData, ChartEvent, ChartOptions } from 'chart.js'
 import { Pie } from 'react-chartjs-2'
 import type { Olympic } from '../models/olympic.ts'
 import { calculateTotalMedals } from '../utils/olympicCalculations.ts'
@@ -47,6 +47,26 @@ const chartOptions: ChartOptions<'pie'> = {
       },
     },
   },
+  onHover: (event, activeElements, chart) => {
+    if (activeElements.length > 0) {
+      const firstSlice = activeElements[0];
+      
+      const datasetIndex = firstSlice.datasetIndex; 
+      const sliceIndex = firstSlice.index; 
+      const label = chart.data.labels?.[sliceIndex];
+      const value = chart.data.datasets[datasetIndex].data?.[sliceIndex];
+
+      console.log(`Hovered slice: ${label} with a value of ${value}`);
+
+      if (event.native && event.native.target) {
+        (event.native.target as HTMLElement).style.cursor = 'pointer';
+      }
+    } else {
+      if (event.native && event.native.target) {
+        (event.native.target as HTMLElement).style.cursor = 'default';
+      }
+    }
+  },
 }
 
 export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
@@ -66,7 +86,7 @@ export const MedalTotalsChart: FC<MedalTotalsChartProps> = ({ countries }) => {
 
   const chartOptionsWithNavigation: ChartOptions<'pie'> = {
     ...chartOptions,
-    onClick: (_event, elements) => {
+    onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
       const element = elements[0]
       if (element) {
         const country = countries[element.index]
