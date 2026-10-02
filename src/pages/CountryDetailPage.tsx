@@ -1,6 +1,5 @@
-import type { FC } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { ErrorState } from '../components/ErrorState.tsx'
+import { useEffect, type FC } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { IndicatorCard } from '../components/IndicatorCard.tsx'
 import { LoadingState } from '../components/LoadingState.tsx'
 import { MedalEvolutionChart } from '../components/MedalEvolutionChart.tsx'
@@ -9,29 +8,42 @@ import { calculateTotalAthletes, calculateTotalMedals } from '../utils/olympicCa
 
 export const CountryDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const parsedId = id === undefined ? Number.NaN : Number(id)
   const countryId = Number.isInteger(parsedId) ? parsedId : -1
   const { data, isLoading, error } = useCountry(countryId)
+  const notFoundReason =
+    !Number.isInteger(parsedId) || parsedId < 1
+      ? "L'identifiant du pays est invalide."
+      : "Le pays demandé n'existe pas ou n'est pas disponible."
+  const shouldRedirect =
+    !Number.isInteger(parsedId) ||
+    parsedId < 1 ||
+    (!isLoading && (Boolean(error) || !data))
 
-  if (!Number.isInteger(parsedId) || parsedId < 1) {
-    return <ErrorState message="Pays introuvable. L'identifiant est invalide." />
+  useEffect(() => {
+    if (shouldRedirect) {
+      navigate('/not-found', {
+        replace: true,
+        state: { reason: notFoundReason },
+      })
+    }
+  }, [navigate, notFoundReason, shouldRedirect])
+
+  if (shouldRedirect) {
+    return null
   }
 
   if (isLoading) {
     return <LoadingState message="Chargement..." />
   }
 
-  if (error) {
-    return <ErrorState message={error.message} />
-  }
-
   if (!data) {
-    return <ErrorState message="Pays introuvable." />
+    return null
   }
 
-  const totalMedals = calculateTotalMedals(data);
-  const totalAthletes = calculateTotalAthletes(data);
-  
+  const totalMedals = calculateTotalMedals(data)
+  const totalAthletes = calculateTotalAthletes(data)
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
